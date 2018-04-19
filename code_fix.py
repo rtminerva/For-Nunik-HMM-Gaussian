@@ -9,7 +9,7 @@ from matplotlib._image import GAUSSIAN
 
 "INPUT"
 #number of state
-n = 10
+n = 3
 #covariance type
 covar_type = "full"
 #number of iteration
@@ -60,18 +60,51 @@ result = []
 test = hidden_states[0]
 for ind, i in enumerate(hidden_states):
     if n == 1 and ind == 0:
-        result.append([0,0,test])
+        result.append([0,0,test,test])
         
     if i != test:
         if len(result) == 0:
-            result.append([0,ind-1,test])
+            result.append([0,ind-1,test,test])
         else:
-            result.append([result[-1][1]+1,ind-1,test])
+            result.append([result[-1][1]+1,ind-1,test, test])
         test = i
 for i in range(0,len(result)):
     result[i][0] = x[result[i][0]]
     result[i][1] = x[result[i][1]]
     result[i][2] = model.means_[result[i][2]][0]
+
+"Analysis"
+x_i = []
+for i in result:
+    x_i.append(i[3])
+x_i_min = x_i[:]
+
+del x_i[-1]
+x_i_min.pop(0)
+
+X_i = x_i[:]
+X_i_min = x_i_min[:]
+density = []
+k = 1
+while k == 1:
+    if len(X_i) > 0:
+        density.append([X_i[0], X_i_min[0], 1])
+        X_i.pop(0)
+        X_i_min.pop(0)
+        jj = []
+        for j in range(0, len(X_i)):
+            if X_i[j] == density[-1][0] and X_i_min[j] == density[-1][1]:
+                density[-1][-1] += 1
+                jj.append(j)
+        for j in jj:
+            X_i.pop(j)
+            X_i_min.pop(j)    
+    else:
+        k == 0   
+
+print(x_i)
+print(x_i_min)
+print(density)
 
 "Print RESULT"
 print("Record of all hidden state")
