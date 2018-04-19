@@ -1,22 +1,9 @@
 "To call functions, tools from Library"
 from __future__ import print_function
-
 import datetime
-
 import numpy as np
 from matplotlib import cm, pyplot as plt
-from matplotlib.dates import YearLocator, MonthLocator
-try:
-    from matplotlib.finance import quotes_historical_yahoo_ochl
-except ImportError:
-    # For Matplotlib prior to 1.5.
-    from matplotlib.finance import (
-        quotes_historical_yahoo as quotes_historical_yahoo_ochl
-    )
-
 from hmmlearn.hmm import GaussianHMM
-
-# print(__doc__)
 
 "Import data from excel file"
 from xlrd import open_workbook
