@@ -77,9 +77,9 @@ for i in range(0,len(result)):
 "Print RESULT"
 print("Record of all hidden state")
 print("**********************************")
-print("TIME Start","   ","TIME End","      ","VALUE")
+print("No.","   ","TIME Start"," - ","TIME End","    ","VALUE")
 for i in range(0,len(result)):
-    print(result[i][0], "    ", result[i][1], "     ", result[i][2])
+    print(i, "    ",result[i][0], " - ", result[i][1], "   ", result[i][2])
 
    
 "Plot data and result"
