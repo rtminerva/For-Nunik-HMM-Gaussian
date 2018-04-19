@@ -3,7 +3,19 @@ from __future__ import print_function
 import datetime
 import numpy as np
 from matplotlib import cm, pyplot as plt
-from hmmlearn.hmm import GaussianHMM
+from hmmlearn.hmm import GaussianHMM, GMMHMM
+from hmmlearn.base import _BaseHMM
+from matplotlib._image import GAUSSIAN
+
+"INPUT"
+#number of state
+n = 10
+#covariance type
+covar_type = "full"
+#number of iteration
+iterr = 1000
+#figure name
+figname = "result__n_%d" % n
 
 "Import data from excel file"
 from xlrd import open_workbook
@@ -24,8 +36,8 @@ X = np.reshape(y,(-1,1))
 
 "Run Gaussian HMM"
 # Make an HMM instance and execute fit
-n_comp = 2
-model = GaussianHMM(n_components=n_comp, covariance_type="full", n_iter=1000).fit(X)
+model = GaussianHMM(n_components=n, covariance_type=covar_type, n_iter=iterr).fit(X)
+# model = GMMHMM(n_components=n_comp, n_iter=1000).fit(X)
 
 # Predict the optimal sequence of internal hidden state
 hidden_states = model.predict(X)
@@ -47,7 +59,7 @@ for i in range(model.n_components):
 result = []
 test = hidden_states[0]
 for ind, i in enumerate(hidden_states):
-    if n_comp == 1 and ind == 0:
+    if n == 1 and ind == 0:
         result.append([0,0,test])
         
     if i != test:
@@ -83,5 +95,6 @@ plt.figure(1)
 plt.title("hmm Gaussian method fitting result vs data")
 plt.plot(x,y, 'r')#, x,y, 'bo')
 plt.plot(x_plot, y_plot, 'k')
-plt.savefig("resultdatan5")
+# plt.savefig("diag101000") 
+plt.savefig("%s.png" % figname)
 plt.show()
