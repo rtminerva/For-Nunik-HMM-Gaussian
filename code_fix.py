@@ -18,7 +18,9 @@ covar_type = "full"
 #number of iteration
 iterr = 1000
 #figure name
-figname = "result__n_%d" % n
+figname1 = "result__n_%d" % n
+
+figname2 = "result__analysis1"
 
 "Import data from excel file"
 from xlrd import open_workbook
@@ -46,18 +48,6 @@ model = GaussianHMM(n_components=n, covariance_type=covar_type, n_iter=iterr).fi
 hidden_states = model.predict(X)
 print("done fitting to HMM")
 
-# "Print All hidden state parameter"
-# print("Transition matrix")
-# print(model.transmat_)
-# print()
-# 
-# print("Means and Variance of each hidden state")
-# for i in range(model.n_components):
-#     print("{0}th hidden state".format(i))
-#     print("mean = ", model.means_[i])
-#     print("variance = ", np.diag(model.covars_[i]))
-#     print()
-
 "Hidden state"
 result = []
 test = hidden_states[0]
@@ -77,7 +67,7 @@ for i in range(0,len(result)):
     result[i][2] = model.means_[result[i][2]][0]
     result[i][4] = result[i][1] - result[i][0]
 
-"Analysis"
+"Analysis 1: x_i affects x_i+1"
 x_i = []
 for i in result:
     x_i.append(i[3])
@@ -86,7 +76,7 @@ x_i_plus = x_i[:]
 del x_i[-1] #remove last element 
 x_i_plus.pop(0) #remove first element
 
-"Create pair of hidden state"
+##Create pair of hidden state
 # ## based on hidden state vestor
 # X_i = x_i[:]
 # X_i_plus = x_i_plus[:]
@@ -116,12 +106,63 @@ for j in range(0, len(pairr)):
         if pairr[j][0] == x_i[k] and pairr[j][1] == x_i_plus[k]:
             density[-1][-1] += 1
     zz.append(density[-1][-1])
+
+"Analysis 2 : Total time domain"
+analysis_2 = []
+for i in range(0,n):
+    analysis_2.append([i,0,0])
+    for j in result:
+        if j[3] == i:
+            analysis_2[-1][1] += 1
+            analysis_2[-1][2] += j[4]
+
+"Print RESULT"
+print("Record of all hidden state")
+print("**********************************")
+print("No.","   ","TIME Start"," - ","TIME End","    ","VALUE","         ","Hidden State {}th","          ","Time domain")
+for i in range(0,len(result)):
+    print(i, "    ",result[i][0], " - ", result[i][1], "   ", result[i][2], "   ", result[i][3], "         ", result[i][4])
+
+"Print All hidden state parameter"
+# print("Transition matrix")
+# print(model.transmat_)
+# print()
+
+"Print list pair of x_i,x_i+1"
+print("record of list pair of x_i,x_i+1")
 print('x_i     ', x_i)
 print('x_i_plus', x_i_plus)            
 print('list of [x_i,x_i_plus]', pairr)
 print('List of [[x_i,x_i_plus], number of repetition]', density)
+ 
+print("Means and Variance of each hidden state")
+for i in range(model.n_components):
+    print("{0}th hidden state".format(i))
+    print("total number with this hidden state = ", analysis_2[i][1])
+    print("mean = ", model.means_[i])
+    print("total time_domain = ", analysis_2[i][2])
+#     print("variance = ", np.diag(model.covars_[i]))
+    print()
 
-"Plot Analysis Result"
+"Plot data and result"
+x_plot = []
+y_plot = []
+for i in result:
+    x_plot.append(i[0])
+    x_plot.append(i[1])
+     
+    y_plot.append(i[2])
+    y_plot.append(i[2])
+ 
+plt.figure(1)
+plt.title("hmm Gaussian method fitting result vs data")
+plt.plot(x,y, 'r')#, x,y, 'bo')
+plt.plot(x_plot, y_plot, 'k')
+# plt.savefig("diag101000") 
+plt.savefig("%s.png" % figname1)
+plt.show()
+
+"Plot Analysis 1 Result"
 # xx = np.linspace(0,n,10)
 # yy = np.linspace(0,n,10)
 # XX, YY = np.meshgrid(xx,yy)
@@ -133,40 +174,21 @@ print('List of [[x_i,x_i_plus], number of repetition]', density)
 #     sigma_x = sigmaa
 #     sigma_y = sigmaa
 #     globals()['Z_%s' % i] = bivariate_normal(XX,YY,sigma_x,sigma_y,mu_x,mu_y)
-#plotting
-fig = plt.figure()
+##plotting
+plt.figure(2)
+fig = plt.figure(2)
 ax = fig.gca(projection='3d')
 # for i in range(0,len(pairr)):
 #     globals()['plo%s' % i] = ax.plot_surface(XX, YY, globals()['Z_%s' % i],cmap='viridis',linewidth=0)
-ax.plot_surface(xx, yy, zz,cmap='viridis',linewidth=0)
-ax.set_xlabel('X axis')
-ax.set_ylabel('Y axis')
-ax.set_zlabel('Z axis')
+# ax.scatter(xx, yy, zz)
+for i in range(0,len(density)):
+    ax.scatter(density[i][0][0],density[i][0][1],density[i][1],color='b') 
+    ax.text(density[i][0][0],density[i][0][1],density[i][1],  '%s' % (str(density[i][1])), size=10, zorder=1,  
+ color='k') 
+# for i,j,k in zip(xx,yy,zz):
+#     ax.annotate(str(zz),xyz=(i,j,k))
+ax.set_xlabel('Hidden State')
+ax.set_ylabel('Hidden State')
+ax.set_zlabel('Number')
+plt.savefig("%s.png" % figname2)
 plt.show()
-
-# 
-# "Print RESULT"
-# print("Record of all hidden state")
-# print("**********************************")
-# print("No.","   ","TIME Start"," - ","TIME End","    ","VALUE","         ","Hidden State {}th","          ","Time domain")
-# for i in range(0,len(result)):
-#     print(i, "    ",result[i][0], " - ", result[i][1], "   ", result[i][2], "   ", result[i][3], "         ", result[i][4])
-
-   
-# "Plot data and result"
-# x_plot = []
-# y_plot = []
-# for i in result:
-#     x_plot.append(i[0])
-#     x_plot.append(i[1])
-#     
-#     y_plot.append(i[2])
-#     y_plot.append(i[2])
-# 
-# plt.figure(1)
-# plt.title("hmm Gaussian method fitting result vs data")
-# plt.plot(x,y, 'r')#, x,y, 'bo')
-# plt.plot(x_plot, y_plot, 'k')
-# # plt.savefig("diag101000") 
-# plt.savefig("%s.png" % figname)
-# plt.show()
