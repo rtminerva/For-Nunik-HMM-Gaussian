@@ -12,15 +12,15 @@ from mpl_toolkits.mplot3d import Axes3D
 
 "INPUT"
 #number of state
-n = 4
+n = 15
 #covariance type
 covar_type = "full"
 #number of iteration
 iterr = 1000
 #figure name
-figname1 = "result__n_%d" % n
+figname1 = "Data2n=15RTV300mVCurrent4%d" % n
 
-figname2 = "result__analysis1"
+figname2 = "3DData2n=15RTV300mVCurrent4"
 
 "Import data from excel file"
 from xlrd import open_workbook
