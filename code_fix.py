@@ -160,6 +160,7 @@ plt.plot(x,y, 'r')#, x,y, 'bo')
 plt.plot(x_plot, y_plot, 'k')
 # plt.savefig("diag101000") 
 plt.savefig("%s.png" % figname1)
+plt.close()
 plt.show()
 
 "Plot Analysis 1 Result"
