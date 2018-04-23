@@ -12,23 +12,15 @@ from mpl_toolkits.mplot3d import Axes3D
 
 "INPUT"
 #number of state
-<<<<<<< HEAD
 n = 15
-=======
-<<<<<<< HEAD
-n = 15
-=======
-n = 3
->>>>>>> branch 'master' of https://github.com/rtminerva/NunikHMM-Gaussian.git
->>>>>>> branch 'master' of https://github.com/rtminerva/NunikHMM-Gaussian.git
 #covariance type
 covar_type = "full"
 #number of iteration
 iterr = 1000
 #figure name
-figname1 = "Data2n=15RTV300mVCurrent4%d" % n
+figname1 = "result__n_%d" % n
 
-figname2 = "3DData2n=15RTV300mVCurrent4"
+figname2 = "result__analysis1"
 
 "Import data from excel file"
 from xlrd import open_workbook
