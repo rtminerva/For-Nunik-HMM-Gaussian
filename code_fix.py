@@ -12,7 +12,11 @@ from mpl_toolkits.mplot3d import Axes3D
 
 "INPUT"
 #number of state
+<<<<<<< HEAD
 n = 15
+=======
+n = 3
+>>>>>>> branch 'master' of https://github.com/rtminerva/NunikHMM-Gaussian.git
 #covariance type
 covar_type = "full"
 #number of iteration
@@ -185,7 +189,7 @@ ax = fig.gca(projection='3d')
 for i in range(0,len(density)):
     if density[i][1] != 0:
         ax.scatter(density[i][0][0],density[i][0][1],density[i][1],color='b') 
-        ax.text(density[i][0][0],density[i][0][1],density[i][1],  '%s' % (str(density[i][1])), size=10, zorder=1,  
+        ax.text(density[i][0][0],density[i][0][1],density[i][1],  '(%s,%s)%s' % (str(density[i][0][0]),str(density[i][0][1]),str(density[i][1])), size=7, zorder=1,  
  color='k') 
 # for i,j,k in zip(xx,yy,zz):
 #     ax.annotate(str(zz),xyz=(i,j,k))
