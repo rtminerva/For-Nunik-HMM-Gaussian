@@ -7,7 +7,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 def pic_2d(coef,set,sol):
     script_dir = os.path.dirname(__file__)
-    results_dir = os.path.join(script_dir, 'a0_b1_ga1_et5/')
+    results_dir = os.path.join(script_dir, 'a0_b1_ga1_et5--/')
     
     if not os.path.isdir(results_dir):
         os.makedirs(results_dir)

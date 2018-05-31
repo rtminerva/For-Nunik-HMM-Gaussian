@@ -47,6 +47,7 @@ def declare_coef():
     set['ga_1'] = 1 #amplitude of vegf
     set['et_1'] = 5 #oscilation vel vegf
     
+    set['u'] = 2 #area of patch
     
     
     
