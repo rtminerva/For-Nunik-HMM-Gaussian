@@ -262,17 +262,30 @@ def prob_by_c(sol,xb,yb): #2.2.(4)
         list_prob = line
     return list_prob
 
-def anas_after(sol):
+def anas_after(sol, pair_tiptotip):
     '''Tip to tip'''
+    ttt = [] #untuk tip yang beranastomosis
     for ind_i, i in enumerate(sol['matrix_tip']):
+        jeh = 0
         for ind_j,j in enumerate(sol['matrix_tip']):
-            while ind_j > ind_i:
-                if i[-1] == j[-1]:
-                    pair_tiptotip.append([ind_i,ind_j, i[-1]])
+            if ind_j > ind_i:
+                if not ind_i in ttt: #tip yg dicek hanya yg belum beranastomosis saja
+                    if i[-1] == j[-1]: # check tip to tip anas
+                        ttt.append(ind_j)
+                        if jeh == 0: #untuk pair anastomosis pertama
+                            pair_tiptotip.append([i[-1],[ind_i,ind_j]])
+                            jeh +=1 
+                        else: #cari di pair mana adanya si titik i[-1]  
+                            ind_k = 0
+                            findd = False
+                            while findd == False:
+                                if i[-1] == pair_tiptotip[ind_k][0]:
+                                    pair_tiptotip[ind_k][1].append(ind_j)
+                                    findd = True
+                                ind_k += 1
     
-    for i in pair_tiptotip:
-        
-                    
+    print 'pair tip-tip anastomosis', pair_tiptotip
+                                    
             
     
     
@@ -281,12 +294,14 @@ def anas_after(sol):
 def hybrid_tech(coef, set, sol): #2.23
     n_sp = len(sol['matrix_tip']) #to save original number of tips before branching
     n_o = numpy.copy(sol['n']) #to save the value of 'n' at time step k (we are calculating at time step k+1)
+    sol['backward_list'] = [] #backward list
 #     sol['vn_o'] = [] #to record tip cell position
 #     sol['bw'] = 0 #to detect backward list
-    sol['backward_list'] = [] #backward list
-    print 'length original matrix sol', n_sp
+#     print 'length original matrix sol', n_sp
+    pair_tiptotip = [] #dicek anastomosis setelah setiap running.
+    
+    #running movement for all active sprouts
     for nom in range(0,n_sp): #dicek setiap tip
-        pair_tiptotip = []
         if not nom in sol['sp_stop']: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
             yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
@@ -305,39 +320,39 @@ def hybrid_tech(coef, set, sol): #2.23
                 '''Making list of prob'''
                 list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = set_list_prob(dirr) #2.2.(1)
                                            
-                '''The Movement And Tip-Tip Anastomosis Checking'''
+                '''The Movement'''
                 branch = False
                 sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(2)
                 
-                '''Check Anastomosis before branching decision'''
-                sol = anas_after(sol)
+    '''Check Anastomosis before branching decision'''
+    sol = anas_after(sol, pair_tiptotip)    
                 
                 
-                '''2.1 Branching Decision'''
-                PP = 'test'
-                if tipp == 'stay' and PP == 'test': #not able to branch, PP untuk pertama kali 
-                    sol['life_time_tip'][nom] += set['dt']
-                else: #there is possibility to branch
-                    if dirr.count(0) >= 3: #no space to move
-                        sol['life_time_tip'][nom] += set['dt']
-                    else: #there is possibility to branch
-                        if sol['life_time_tip'][nom] < coef['T_branch']: #not able to branch
-                            sol['life_time_tip'][nom] += set['dt']
-                        else: #there is possibility to branch
-#                             Probability of Branching using c
-                            list_prob = prob_by_c(sol,xb,yb) #range(1,11) #2.2.(4)
-                            tes = randint(1,10)
-                            if not tes in list_prob: #not able to branch
-                                sol['life_time_tip'][nom] += set['dt']
-                            else: #BRANCHING!
-#                                 print 'Branchingg'
-                                sol['life_time_tip'][nom] = 0
-                                sol['matrix_tip'].append([[xb,yb]])
-                                sol['life_time_tip'].append(0)
-                                '''The Movement from branching'''
-                                branch = True
-                                nom = len(sol['matrix_tip'])-1
-                                sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(5)
+#                 '''2.1 Branching Decision'''
+#                 PP = 'test'
+#                 if tipp == 'stay' and PP == 'test': #not able to branch, PP untuk pertama kali 
+#                     sol['life_time_tip'][nom] += set['dt']
+#                 else: #there is possibility to branch
+#                     if dirr.count(0) >= 3: #no space to move
+#                         sol['life_time_tip'][nom] += set['dt']
+#                     else: #there is possibility to branch
+#                         if sol['life_time_tip'][nom] < coef['T_branch']: #not able to branch
+#                             sol['life_time_tip'][nom] += set['dt']
+#                         else: #there is possibility to branch
+# #                             Probability of Branching using c
+#                             list_prob = prob_by_c(sol,xb,yb) #range(1,11) #2.2.(4)
+#                             tes = randint(1,10)
+#                             if not tes in list_prob: #not able to branch
+#                                 sol['life_time_tip'][nom] += set['dt']
+#                             else: #BRANCHING!
+# #                                 print 'Branchingg'
+#                                 sol['life_time_tip'][nom] = 0
+#                                 sol['matrix_tip'].append([[xb,yb]])
+#                                 sol['life_time_tip'].append(0)
+#                                 '''The Movement from branching'''
+#                                 branch = True
+#                                 nom = len(sol['matrix_tip'])-1
+#                                 sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(5)
     if len(sol['backward_list']) > 0:
         sol['backward_count'].append(set['k'])
     print 'nom', nom
