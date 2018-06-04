@@ -368,13 +368,14 @@ def anas_after(sol, tipp, n_sp, branchingg):
                             for ind_j,j in enumerate(sol['matrix_tip']):
                                 if ind_i != ind_j: #bukan self-looping
         #                             if j[-1] != ind_i: # punya si anastomosis tip #can be removed
+                                    lennk = 0
                                     for k in j:
-                                        if i[-1] == k: #anastomosis to sprout
+                                        if i[-1] == k and lennk < len(j)-1: #anastomosis to sprout
                                             sol['sp_stop'].append(ind_i)
                                             sol['cause'][ind_i] = 'anastomosis to sprout'
                                             sol['n'][i[-1][0],i[-1][1]] = 0
                                             i.append(ind_j+10000)
-    
+                                    lennk += 1
     return sol
 
 def hybrid_tech(coef, set, sol): #2.23
