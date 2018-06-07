@@ -7,7 +7,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 def pic_2d(coef,set,sol):
     script_dir = os.path.dirname(__file__)
-    results_dir = os.path.join(script_dir, 'test1_nobranching/')
+    results_dir = os.path.join(script_dir, 'al0_be2k5_ga1_et1_nobranching/')
     
     if not os.path.isdir(results_dir):
         os.makedirs(results_dir)
