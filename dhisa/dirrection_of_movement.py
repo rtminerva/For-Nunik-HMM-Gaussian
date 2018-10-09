@@ -13,11 +13,11 @@ def movement_dir(coef, set, sol, xb, yb): #2.2.1
     ave_ct = (sol['c_t'][xb-1,yb-1] + sol['c_t'][xb+1,yb+1] + sol['c_t'][xb-1,yb+1] + sol['c_t'][xb+1,yb-1])/4
     
     if ave_ct > 0:
-        vijx = set['al_1']*cijx - set['be_1']*ctijx
-        vijy = set['al_1']*cijy - set['be_1']*ctijy
+        vijx = coef['al_1']*cijx - coef['be_1']*ctijx
+        vijy = coef['al_1']*cijy - coef['be_1']*ctijy
     else:
-        vijx = set['al_1']*cijx
-        vijy = set['al_1']*cijy
+        vijx = coef['al_1']*cijx
+        vijy = coef['al_1']*cijy
     vijx_p = max(0,vijx)
     vijx_n = max(0,-vijx)
     vijy_p = max(0,vijy)

@@ -21,7 +21,7 @@ def random_tip(coef,set,sol): #2.1.2.(2)
     if x % 2 == 0:
         x += 1
     
-    for i in range(0,20):
+    for i in range(0,20): #20
         y = random.choice(line)
         sol['matrix_tip'].append([[x,y]])
         sol['n'][x,y] = 1

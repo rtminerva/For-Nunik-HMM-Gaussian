@@ -2,12 +2,12 @@ import numpy
 import math as m
 from click import _winconsole
 
-def cprof(coef,set,sol):
-    for y in range(0,set['Ny']+1,2):
-        for x in range(0,set['Nx']+1,2):
-            sol['c'][x,y] = (1+m.sin(2*m.pi*set['al_1']*x*set['Hh']-set['et_1']*set['t']))*m.exp(-set['xi_1']*set['t'])
-        
-    return sol
+# def cprof(coef,set,sol):
+#     for y in range(0,set['Ny']+1,2):
+#         for x in range(0,set['Nx']+1,2):
+#             sol['c'][x,y] = (1+m.sin(2*m.pi*set['al_1']*x*set['Hh']-set['et_1']*set['t']))*m.exp(-set['xi_1']*set['t'])
+#         
+#     return sol
 
 def ctprof(coef,set,sol):
     viu = (numpy.sqrt(5)-0.1)/(numpy.sqrt(5)-1)
