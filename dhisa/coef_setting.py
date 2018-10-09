@@ -40,13 +40,14 @@ def declare_coef():
 #     coef['T_mitosis'] = 1000#0.5
 
     set['al_1'] = 0 #gradient c
-    set['be_1'] = 1 #gradient c_t
+    set['be_1'] = 2.5 #gradient c_t
     
 #     set['xi_1'] = 1
     
     set['ga_1'] = 1 #amplitude of vegf
-    set['et_1'] = 5 #oscilation vel vegf
+    set['et_1'] = 1 #oscilation vel vegf
     
+    set['u'] = 2 #area of patch
     
     
     
@@ -54,7 +55,7 @@ def declare_coef():
     ##set dictionaries tidak pernah berubah
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 10.002
+    set['T'] = 5.002
     set['Nt'] = 100000
     set['theta'] = 0.5
     set['rad'] = 0.01/ra

@@ -85,7 +85,7 @@ x_i_plus.pop(0) #remove first element
 #     if [x_i[j],x_i_plus[j]] not in pairr:
 #         pairr.append([x_i[j],x_i_plus[j]])
         
-## based on combination of hidden state
+## based on combination of all hidden state
 X_i = []
 xx = []
 yy = []

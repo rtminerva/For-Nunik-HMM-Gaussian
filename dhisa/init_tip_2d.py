@@ -96,9 +96,19 @@ def init_tip_2d_(coef,set,sol):
 #     sol = rec_5_tip(coef,set,sol) #2.1.2.(2)
     sol = random_tip(coef,set,sol)
     
-    '''Storing Tip Cell'''
-    for e,ti in enumerate(sol['matrix_tip']):
-        sol['tip_cell'].append([sol['matrix_tip'][e][-1][0],sol['matrix_tip'][e][-1][1]])  
+    '''TIP CELL'''
+    for ind_i, i in enumerate(sol['matrix_tip']):
+        if len(i) > 1:
+            if isinstance(i[-1], int) == True: #sprout yang masih hidup
+                sol['tip_cell'].append(i[-2])
+            else:
+                sol['tip_cell'].append(i[-1])
+        else:
+            sol['tip_cell'].append(i[-1])
+    
+#     '''Storing Tip Cell'''
+#     for e,ti in enumerate(sol['matrix_tip']):
+#         sol['tip_cell'].append([sol['matrix_tip'][e][-1][0],sol['matrix_tip'][e][-1][1]])  
     
 #     '''Recording Tip cell area (4 points)'''
 #     sol['tip_cell_area'] = []

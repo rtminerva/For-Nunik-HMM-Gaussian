@@ -26,14 +26,20 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'Tip Cell Pos:', sol['tip_cell']
     for e, i in enumerate(sol['matrix_tip']):
         if e in sol['sp_stop']:
-            print 'stop', e, ':', i[-1], ',', sol['cause'][e], ',', 'Length of sprout:', len(i)
+            if len(i) > 1:
+                print 'stop', e, ':',i[-2] , i[-1], ',', sol['cause'][e], ',', 'Length of sprout:', len(i)
+            else:
+                print 'stop', e, ':',i[-1], ',', sol['cause'][e], ',', 'Length of sprout:', len(i)
         else:
-            print 'RUN', e, ':', i[-1], ',', 'Length of sprout:', len(i)
+            if len(i) > 1:
+                print 'RUN', e, ':',i[-2] , i[-1], ',', 'Length of sprout:', len(i)
+            else:
+                print 'RUN', e, ':',i[-1], ',', 'Length of sprout:', len(i)
 #     print 'Backward at time step:', sol['backward_count']
     print 'Max Value of c, n', sol['c'].max(),',', sol['n'].max()
     print 'Min Value of c, n', sol['c'].min(),',', sol['n'].min()
-    
-    if set['k'] % 10 == 0:
+     
+    if set['k'] % 1 == 0:
         pic.pic_2d(coef,set,sol) #3
 
     '''Recording Time'''         
