@@ -8,7 +8,7 @@ def declare_coef():
     sol = {}
 
     '''measurement'''
-    ra = 0.05 #cm 
+    ra = 0.05 #cm ##
     x = ra*2 
     y = ra*2 
     T_1 = 86400 #s
